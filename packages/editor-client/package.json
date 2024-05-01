@@ -1,6 +1,9 @@
 {
-    "name": "@lemonde/core",
-    "scripts": {},
+    "name": "@lemonde/editor-client",
+    "scripts": {
+        "start": "vite",
+        "build": "vite build"
+    },
     "type": "module",
     "author": "Masaru Yamagishi <akai_inu@live.jp>",
     "license": "Apache-2.0"

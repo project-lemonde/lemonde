@@ -1,6 +1,8 @@
 {
-    "name": "@lemonde/core",
-    "scripts": {},
+    "name": "@lemonde/editor-server",
+    "scripts": {
+        "start": "pnpm dlx tsx src/index.mts"
+    },
     "type": "module",
     "author": "Masaru Yamagishi <akai_inu@live.jp>",
     "license": "Apache-2.0"
