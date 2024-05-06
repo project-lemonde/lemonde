@@ -8,12 +8,14 @@
         "indentSize": 4,
         "indentStyle": "space",
         "indentWidth": 4,
-        "lineWidth": 160
+        "lineWidth": 160,
+        "lineEnding": "lf",
+        "attributePosition": "auto"
     },
     "linter": {
         "enabled": true,
         "rules": {
-            "recommended": true
+            "all": true
         }
     }
 }
