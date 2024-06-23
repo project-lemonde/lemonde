@@ -8,7 +8,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&display=swap" rel="stylesheet">
-    <title>Project SERIOUS Editor</title>
     <style>
         *,
         *::before,
@@ -26,8 +25,7 @@
 
         body {
             width: 100vw;
-            height: 100vh;
-            overflow: hidden;
+            overflow-x: hidden;
             background-color: light-dark(#AEA8BA, #150F20);
             color: light-dark(#150F20, #FDF6FF);
             font-family: "Noto Sans JP",
@@ -46,6 +44,12 @@
             outline: none;
         }
 
+        h2 {
+            font-size: medium;
+            background-color: light-dark(#9E98AA, #150F20);
+            padding-left: 0.5rem;
+        }
+
         #root {
             width: 100%;
             height: 100%;
@@ -54,11 +58,43 @@
 
         #renderer {
             width: 100%;
+            height: 100vh;
         }
 
         #render-canvas {
             width: 100%;
             height: 100%;
+        }
+
+        #property {
+            height: 100%;
+        }
+
+        #hierarchy {
+            ul {
+                list-style: none;
+                line-height: 1rem;
+                padding: 0;
+            }
+
+            button {
+                display: block;
+                width: 100%;
+                text-align: left;
+            }
+        }
+
+        #inspector {
+            overflow-y: auto;
+        }
+
+        #inspector td:nth-child(1) {
+            font-size: small;
+            text-wrap: nowrap;
+        }
+
+        #inspector td {
+            line-height: 1.1rem;
         }
     </style>
     <script type="module" src="./src/index.ts"></script>
@@ -69,18 +105,330 @@
         <div id="renderer">
             <canvas id="render-canvas"></canvas>
         </div>
-        <div id="hierarchy">
-            <h2>Hierarchy</h2>
-            <ul id="hierarchy-list">
-                <li>
-                    <a href="#">Scene</a>
-                    <ul>
-                        <li><a href="#">DirectionalLight</a></li>
-                        <li><a href="#">Ground</a></li>
-                        <li><a href="#">Box</a></li>
-                    </ul>
-                </li>
-            </ul>
+        <div id="property">
+            <div id="hierarchy">
+                <h2>Hierarchy</h2>
+                <ul id="hierarchy-list">
+                    <li>
+                        <button type="button">Scene</button>
+                        <ul>
+                            <li><button type="button">DirectionalLight</button></li>
+                            <li><button type="button">Ground</button></li>
+                            <li><button type="button">Box</button></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <div id="inspector">
+                <h2>Inspector</h2>
+                <table>
+                    <thead>
+                        <th colspan="2">Scene</th>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th colspan="2">General</th>
+                        </tr>
+                        <tr>
+                            <td><label for="autoClear"
+                                    title="Gets or sets a boolean that indicates if the scene must clear the render buffer before rendering a frame">Auto
+                                    clear</label></td>
+                            <td><input id="autoClear" name="autoClear" type="checkbox" /></td>
+                        </tr>
+                        <tr>
+                            <td><label for="autoClearDepthAndStencil"
+                                    title="Gets or sets a boolean that indicates if the scene must clear the depth and stencil buffers before rendering a frame">Clear
+                                    Depth and Stencil</label></td>
+                            <td><input id="autoClearDepthAndStencil" name="autoClearDepthAndStencil" type="checkbox" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><label for="clearColor"
+                                    title="Defines the color used to clear the render buffer (Default is (0.2, 0.2, 0.3, 1.0))">Clear
+                                    Color</label></td>
+                            <td><input id="clearColor" name="clearColor" type="color" /></td>
+                        </tr>
+                        <tr>
+                            <td><label for="ambientColor"
+                                    title="Defines the color used to simulate the ambient color (Default is (0, 0, 0))">Ambient
+                                    Color</label></td>
+                            <td><input id="ambientColor" name="ambientColor" type="color" /></td>
+                        </tr>
+                        <tr>
+                            <td><label for="environmentTexture" title="Texture used in all pbr material as the reflection texture.
+                                * As in the majority of the scene they are the same (exception for multi room and so on),
+                                * this is easier to reference from here than from all the materials.">Environment
+                                    Texture</label></td>
+                            <td><input id="environmentTexture" name="environmentTexture" type="file" /></td>
+                        </tr>
+                        <tr>
+                            <td><label for="environmentIntensity" title="Intensity of the environment in all pbr material.
+                                * This dims or reinforces the IBL lighting overall (reflection and diffuse).
+                                * As in the majority of the scene they are the same (exception for multi room and so on),
+                                * this is easier to reference from here than from all the materials.">Environment
+                                    Intensity</label></td>
+                            <td><input id="environmentIntensity" name="environmentIntensity" type="number" min="0.0"
+                                    value="1.0" /></td>
+                        </tr>
+                        <tr>
+                            <td><label for="performancePriority">Performance Priority</label></td>
+                            <td><select id="performancePriority" name="performancePriority">
+                                    <option vlaue="0"
+                                        title="Default mode. No change. Performance will be treated as less important than backward compatibility">
+                                        Backward Compatible</option>
+                                    <option value="1"
+                                        title="Some performance options will be turned on trying to strike a balance between perf and ease of use">
+                                        Intermediate</option>
+                                    <option value="2" title="Performance will be top priority">Aggressive</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="2" title="Default image processing configuration used either in the rendering
+                            * Forward main pass or through the imageProcessingPostProcess if present.
+                            * As in the majority of the scene they are the same (exception for multi camera),
+                            * this is easier to reference from here than from all the materials and post process.
+                            *
+                            * No setter as we it is a shared configuration, you can set the values instead.">Image
+                                Processing</th>
+                        </tr>
+                        <tr>
+                            <td><label for="colorCurvesEnabled"
+                                    title="Color curves setup used in the effect if colorCurvesEnabled is set to true">Color
+                                    Curves</label></td>
+                            <td><input id="colorCurvesEnabled" name="colorCurvesEnabled" type="checkbox" /></td>
+                        </tr>
+                        <tr>
+                            <td><label for="colorGradingEnabled"
+                                    title="Sets whether the color grading effect is enabled.">Color Grading</label></td>
+                            <td><input id="colorGradingEnabled" name="colorGradingEnabled" type="checkbox" /></td>
+                        </tr>
+                        <tr>
+                            <td><label for="colorGradingTexture"
+                                    title="Color grading LUT texture used in the effect if colorGradingEnabled is set to true">Color
+                                    Grading Texture</label></td>
+                            <td><input id="colorGradingTexture" name="colorGradingTexture" type="file" /></td>
+                        </tr>
+                        <tr>
+                            <td><label for="colorGradingWithGreenDepth"
+                                    title="Sets whether the color grading effect is using a green depth for the 3d Texture.">Color
+                                    Grading with Green Depth</label></td>
+                            <td><input id="colorGradingWithGreenDepth" name="colorGradingWithGreenDepth"
+                                    type="checkbox" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><label for="colorGradingWithBGR"
+                                    title="Sets whether the color grading texture contains BGR values.">Color Grading
+                                    BGR</label></td>
+                            <td><input id="colorGradingWithBGR" name="colorGradingWithBGR" type="checkbox" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><label for="exposure" title="Sets the Exposure used in the effect.">Exposure</label>
+                            </td>
+                            <td><input id="exposure" name="exposure" type="number" min="0.0" value="1.0" /></td>
+                        </tr>
+                        <tr>
+                            <td><label for="toneMappingEnabled"
+                                    title="Sets whether the tone mapping effect is enabled.">Tone Mapping</label></td>
+                            <td><input id="toneMappingEnabled" name="toneMappingEnabled" type="checkbox" /></td>
+                        </tr>
+                        <tr>
+                            <td><label for="toneMappingType">Tone Mapping Type</label></td>
+                            <td><select id="toneMappingType" name="toneMappingType">
+                                    <option value="0" title="Default tone mapping applied in BabylonJS.">Standard
+                                    </option>
+                                    <option value="1" title="ACES Tone mapping (used by default in unreal and unity). This can help getting closer
+                                    * to other engines rendering to increase portability.">ACES</option>
+                                    <option value="2" title="Neutral Tone mapping developped by the Khronos group in order to constrain
+                                    * values between 0 and 1 without shifting Hue.">KHR_PBR_NEUTRAL</option>
+                                </select></td>
+                        </tr>
+                        <tr>
+                            <td><label for="contrast" title="Sets the contrast used in the effect.">Constrast</label>
+                            </td>
+                            <td><input id="contrast" name="contrast" type="number" min="0.0" value="1.0" /></td>
+                        </tr>
+                        <tr>
+                            <td><label for="vignetteStretch" title="Vignette stretch size.">Vignette Stretch</label>
+                            </td>
+                            <td><input id="vignetteStretch" name="vignetteStretch" type="number" value="0" /></td>
+                        </tr>
+                        <tr>
+                            <th colspan="2">Debug</th>
+                        </tr>
+                        <tr>
+                            <td><label for="forceWireframe"
+                                    title="Gets or sets a boolean indicating if all rendering must be done in wireframe">Force
+                                    Wireframe</label></td>
+                            <td><input id="forceWireframe" name="forceWireframe" type="checkbox" /></td>
+                        </tr>
+                        <tr>
+                            <td><label for="skipFrustumClipping"
+                                    title="Gets or sets a boolean indicating if we should skip the frustum clipping part of the active meshes selection">Skip
+                                    Frustum Clipping</label></td>
+                            <td><input id="skipFrustumClipping" name="skipFrustumClipping" type="checkbox" /></td>
+                        </tr>
+                        <tr>
+                            <td><label for="forcePointsCloud"
+                                    title="Gets or sets a boolean indicating if all rendering must be done in point cloud">Force
+                                    Points Cloud</label></td>
+                            <td><input id="forcePointsCloud" name="forcePointsCloud" type="checkbox" /></td>
+                        </tr>
+                        <tr>
+                            <td><label for="animationsEnabled"
+                                    title="Gets or sets a boolean indicating if animations are enabled">Animations
+                                    Enabled</label></td>
+                            <td><input id="animationsEnabled" name="animationsEnabled" type="checkbox" checked /></td>
+                        </tr>
+                        <tr>
+                            <td><label for="useConstantAnimationDeltaTime"
+                                    title="Gets or sets a boolean indicating if a constant deltatime has to be used
+                                * This is mostly useful for testing purposes when you do not want the animations to scale with the framerate">Use Constant
+                                    Animation Delta Time</label></td>
+                            <td><input id="useConstantAnimationDeltaTime" name="useConstantAnimationDeltaTime"
+                                    type="checkbox" /></td>
+                        </tr>
+                        <tr>
+                            <td><label for="constantlyUpdateMeshUnderPointer"
+                                    title="Gets or sets a boolean indicating if the scene must keep the meshUnderPointer property updated
+                                * Please note that it requires to run a ray cast through the scene on every frame">Constantly Update Mesh Under Pointer</label>
+                            </td>
+                            <td><input id="constantlyUpdateMeshUnderPointer" name="constantlyUpdateMeshUnderPointer"
+                                    type="checkbox" /></td>
+                        </tr>
+                        <tr>
+                            <td><label for="hoverCursor"
+                                    title="Defines the HTML cursor to use when hovering over interactive elements">Hover
+                                    Cursor</label></td>
+                            <td><select id="hoverCursor" name="hoverCursor">
+                                    <option value="pointer" selected>pointer</option>
+                                    <option value="auto">auto</option>
+                                    <option value="default">default</option>
+                                    <option value="none">none</option>
+                                    <option value="context-menu">context-menu</option>
+                                    <option value="help">help</option>
+                                    <option value="pointer">pointer</option>
+                                    <option value="progress">progress</option>
+                                    <option value="wait">wait</option>
+                                    <option value="cell">cell</option>
+                                    <option value="crosshair">crosshair</option>
+                                    <option value="text">text</option>
+                                    <option value="vertical-text">vertical-text</option>
+                                    <option value="alias">alias</option>
+                                    <option value="copy">copy</option>
+                                    <option value="move">move</option>
+                                    <option value="no-drop">no-drop</option>
+                                    <option value="not-allowed">not-allowed</option>
+                                    <option value="grab">grab</option>
+                                    <option value="grabbing">grabbing</option>
+                                    <option value="e-resize">e-resize</option>
+                                    <option value="n-resize">n-resize</option>
+                                    <option value="ne-resize">ne-resize</option>
+                                    <option value="nw-resize">nw-resize</option>
+                                    <option value="s-resize">s-resize</option>
+                                    <option value="se-resize">se-resize</option>
+                                    <option value="sw-resize">sw-resize</option>
+                                    <option value="w-resize">w-resize</option>
+                                    <option value="ew-resize">ew-resize</option>
+                                    <option value="ns-resize">ns-resize</option>
+                                    <option value="nesw-resize">nesw-resize</option>
+                                    <option value="nwse-resize">nwse-resize</option>
+                                    <option value="col-resize">col-resize</option>
+                                    <option value="row-resize">row-resize</option>
+                                    <option value="all-scroll">all-scroll</option>
+                                    <option value="zoom-in">zoom-in</option>
+                                    <option value="zoom-out">zoom-out</option>
+                                </select></td>
+                        </tr>
+                        <tr>
+                            <td><label for="defaultCursor">Default cursor</label></td>
+                            <td><select id="defaultCursor" name="defaultCursor">
+                                    <option value="pointer">pointer</option>
+                                    <option value="auto">auto</option>
+                                    <option value="default">default</option>
+                                    <option value="none" selected>none</option>
+                                    <option value="context-menu">context-menu</option>
+                                    <option value="help">help</option>
+                                    <option value="pointer">pointer</option>
+                                    <option value="progress">progress</option>
+                                    <option value="wait">wait</option>
+                                    <option value="cell">cell</option>
+                                    <option value="crosshair">crosshair</option>
+                                    <option value="text">text</option>
+                                    <option value="vertical-text">vertical-text</option>
+                                    <option value="alias">alias</option>
+                                    <option value="copy">copy</option>
+                                    <option value="move">move</option>
+                                    <option value="no-drop">no-drop</option>
+                                    <option value="not-allowed">not-allowed</option>
+                                    <option value="grab">grab</option>
+                                    <option value="grabbing">grabbing</option>
+                                    <option value="e-resize">e-resize</option>
+                                    <option value="n-resize">n-resize</option>
+                                    <option value="ne-resize">ne-resize</option>
+                                    <option value="nw-resize">nw-resize</option>
+                                    <option value="s-resize">s-resize</option>
+                                    <option value="se-resize">se-resize</option>
+                                    <option value="sw-resize">sw-resize</option>
+                                    <option value="w-resize">w-resize</option>
+                                    <option value="ew-resize">ew-resize</option>
+                                    <option value="ns-resize">ns-resize</option>
+                                    <option value="nesw-resize">nesw-resize</option>
+                                    <option value="nwse-resize">nwse-resize</option>
+                                    <option value="col-resize">col-resize</option>
+                                    <option value="row-resize">row-resize</option>
+                                    <option value="all-scroll">all-scroll</option>
+                                    <option value="zoom-in">zoom-in</option>
+                                    <option value="zoom-out">zoom-out</option>
+                                </select></td>
+                        </tr>
+                        <tr>
+                            <td><label for="doNotHandleCursors"
+                                    title="Defines whether cursors are handled by the scene.">Do
+                                    Not Handle Cursors</label></td>
+                            <td><input id="doNotHandleCursors" name="doNotHandleCursors" type="checkbox" /></td>
+                        </tr>
+                        <tr>
+                            <td><label for="preventDefaultOnPointerDown" title="This is used to call preventDefault() on pointer down
+                                * in order to block unwanted artifacts like system double clicks">Prevent Default On
+                                    Pointer Down</label></td>
+                            <td><input id="preventDefaultOnPointerDown" name="preventDefaultOnPointerDown"
+                                    type="checkbox" /></td>
+                        </tr>
+                        <tr>
+                            <td><label for="metadata" title="Gets or sets user defined metadata">Metadata</label></td>
+                            <td><textarea id="metadata" name="metadata" row="3"></textarea></td>
+                        </tr>
+                        <tr>
+                            <th colspan="2">Observables</th>
+                        </tr>
+                        <tr>
+                            <td><label for="onDisposeObservable" title="An event triggered when the scene is disposed.">
+                                    Dispose</label></td>
+                            <td><input id="onDisposeObservable" name="onDisposeObservable" type="file" /></td>
+                        </tr>
+                        <tr>
+                            <td><label for="onBeforeRenderObservable" title="An event triggered before rendering the scene
+                                    (right after animations and physics\)">Before Render</label></td>
+                            <td><input id="onBeforeRenderObservable" name="onBeforeRenderObservable" type="file" /></td>
+                        </tr>
+                        <tr>
+                            <td><label for="onAfterRenderObservable"
+                                    title="An event triggered after rendering the scene">After Render</label></td>
+                            <td><input id="onAfterRenderObservable" name="onAfterRenderObservable" type="file" /></td>
+                        </tr>
+                        <tr>
+                            <td><label for="onAfterRenderCameraObservable" title="An event triggered after rendering the scene for an active camera (When scene.render is called this will be called after each camera)
+                                * This is triggered for each sub camera in a Camera Rig unlike
+                                    onAfterCameraRenderObservable">After Render Camera</label></td>
+                            <td><input id="onAfterRenderCameraObservable" name="onAfterRenderCameraObservable"
+                                    type="file" /></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </body>

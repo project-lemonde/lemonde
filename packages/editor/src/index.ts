@@ -1,10 +1,10 @@
-import { Vector3 } from "@babylonjs/core/Maths/math.vector";
 import { UniversalCamera } from "@babylonjs/core/Cameras/universalCamera";
 import { Engine } from "@babylonjs/core/Engines/engine";
-import "@babylonjs/core/Materials/standardMaterial";
-import { Scene } from "@babylonjs/core/scene";
-import { MeshBuilder } from "@babylonjs/core/Meshes/meshBuilder";
 import { DirectionalLight } from "@babylonjs/core/Lights/directionalLight";
+import "@babylonjs/core/Materials/standardMaterial";
+import { Vector3 } from "@babylonjs/core/Maths/math.vector";
+import { MeshBuilder } from "@babylonjs/core/Meshes/meshBuilder";
+import { Scene } from "@babylonjs/core/scene";
 
 window.addEventListener("load", () => {
     const canvas = document.getElementById("render-canvas") as HTMLCanvasElement;
