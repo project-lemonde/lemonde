@@ -28,8 +28,8 @@
             width: 100vw;
             height: 100vh;
             overflow: hidden;
-            background-color: light-dark(#ddd, #111);
-            color: light-dark(#111, #ddd);
+            background-color: light-dark(#AEA8BA, #150F20);
+            color: light-dark(#150F20, #FDF6FF);
             font-family: "Noto Sans JP",
                 "Helvetica Neue",
                 Arial,
@@ -49,13 +49,40 @@
         #root {
             width: 100%;
             height: 100%;
+            display: flex;
+        }
+
+        #renderer {
+            width: 100%;
+        }
+
+        #render-canvas {
+            width: 100%;
+            height: 100%;
         }
     </style>
+    <script type="module" src="./src/index.ts"></script>
 </head>
 
 <body>
-    <div id="root"></div>
-    <script type="module" src="./src/index.ts"></script>
+    <div id="root">
+        <div id="renderer">
+            <canvas id="render-canvas"></canvas>
+        </div>
+        <div id="hierarchy">
+            <h2>Hierarchy</h2>
+            <ul id="hierarchy-list">
+                <li>
+                    <a href="#">Scene</a>
+                    <ul>
+                        <li><a href="#">DirectionalLight</a></li>
+                        <li><a href="#">Ground</a></li>
+                        <li><a href="#">Box</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
 </body>
 
 </html>

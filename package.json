@@ -1,5 +1,6 @@
 {
     "name": "@project-lemonde/root",
+    "version": "0.0.0",
     "private": true,
     "license": "UNLICENSED",
     "engines": {
