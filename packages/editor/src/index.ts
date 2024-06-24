@@ -22,7 +22,7 @@ window.addEventListener("load", () => {
     const addScene = document.querySelector<HTMLButtonElement>("#add-object-menu [data-target='Scene']");
     const addDirectionalLight = document.querySelector<HTMLButtonElement>("#add-object-menu [data-target='DirectionalLight']");
     const addBox = document.querySelector<HTMLButtonElement>("#add-object-menu [data-target='Box']");
-    const inspector = document.getElementById("inspector") as HTMLDivElement;
+    const inspector = document.getElementById("inspector-content") as HTMLDivElement;
     const hierarchyList = document.getElementById("hierarchy-list") as HTMLUListElement;
     let activeScene: Scene | null = null;
     initEngineAsync(canvas)
@@ -35,6 +35,10 @@ window.addEventListener("load", () => {
 
             const toggleObjectMenu = () => {
                 addObjectMenu.style.display = addObjectMenu.style.display === "block" ? "none" : "block";
+            };
+            const replaceInspector = (table: HTMLTableElement) => {
+                inspector.innerHTML = "";
+                inspector.appendChild(table);
             };
             addObject.addEventListener("click", (e) => {
                 e.preventDefault();
@@ -68,10 +72,7 @@ window.addEventListener("load", () => {
                     position: new Vector3(0, 5, 0),
                 });
                 const table = createInspector(light, DirectionalLightInspector);
-                for (const t of inspector.getElementsByTagName("table")) {
-                    t.remove();
-                }
-                inspector.appendChild(table);
+                replaceInspector(table);
                 toggleObjectMenu();
             });
             addBox?.addEventListener("click", (e) => {
@@ -81,10 +82,7 @@ window.addEventListener("load", () => {
                 }
                 const { mesh } = AddBoxCommand({ scene: activeScene });
                 const table = createInspector(mesh, MeshInspector);
-                for (const t of inspector.getElementsByTagName("table")) {
-                    t.remove();
-                }
-                inspector.appendChild(table);
+                replaceInspector(table);
                 toggleObjectMenu();
             });
         });

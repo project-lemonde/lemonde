@@ -6,7 +6,7 @@ export const MeshInspector: readonly InspectorContent[] = [
         label: "Name",
         type: "text",
         default: "Mesh",
-        category: "Misc",
+        category: "General",
         description: "Name of the mesh.",
     },
     {
@@ -14,7 +14,7 @@ export const MeshInspector: readonly InspectorContent[] = [
         label: "Id",
         type: "text",
         default: "",
-        category: "Misc",
+        category: "General",
         description: "Id of the mesh.",
     },
     {
@@ -22,7 +22,7 @@ export const MeshInspector: readonly InspectorContent[] = [
         label: "Position",
         type: "vector3",
         default: [0, 0, 0],
-        category: "Misc",
+        category: "General",
         description: "Position of the mesh.",
     },
     {
@@ -30,7 +30,7 @@ export const MeshInspector: readonly InspectorContent[] = [
         label: "Rotation",
         type: "vector3",
         default: [0, 0, 0],
-        category: "Misc",
+        category: "General",
         description: "Rotation of the mesh.",
     },
     {
@@ -38,7 +38,7 @@ export const MeshInspector: readonly InspectorContent[] = [
         label: "Scaling",
         type: "vector3",
         default: [1, 1, 1],
-        category: "Misc",
+        category: "General",
         description: "Scaling of the mesh.",
     },
     {
