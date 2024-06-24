@@ -52,8 +52,8 @@
         }
 
         #root {
-            width: 100%;
-            height: 100%;
+            width: 100vw;
+            height: 100vh;
             display: flex;
         }
 
@@ -68,7 +68,7 @@
         }
 
         #property {
-            height: 100%;
+            height: 100vh;
         }
 
         #hierarchy {
@@ -98,7 +98,7 @@
         }
 
         #inspector {
-            overflow-y: auto;
+            overflow-y: scroll;
         }
 
         #inspector td:nth-child(1) {
@@ -128,6 +128,7 @@
                     <ul id="add-object-menu">
                         <li><button type="button" data-target="Scene">Scene</button></li>
                         <li><button type="button" data-target="DirectionalLight">DirectionalLight</button></li>
+                        <li><button type="button" data-target="TransformNode">TransformNode</button></li>
                         <li><button type="button" data-target="Box">Box</button></li>
                         <li><button type="button" data-target="Ground">Ground</button></li>
                     </ul>

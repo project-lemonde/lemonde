@@ -1,0 +1,126 @@
+import type { InspectorContent } from "../types";
+
+export const TransformNodeInspector: readonly InspectorContent[] = [
+    {
+        name: "name",
+        label: "Name",
+        type: "text",
+        default: "Mesh",
+        category: "Misc",
+        description: "Name of the mesh.",
+    },
+    {
+        name: "id",
+        label: "Id",
+        type: "text",
+        default: "",
+        category: "Misc",
+        description: "Id of the mesh.",
+    },
+    {
+        name: "position",
+        label: "Position",
+        type: "vector3",
+        default: [0, 0, 0],
+        category: "Misc",
+        description: "Position of the mesh.",
+    },
+    {
+        name: "rotation",
+        label: "Rotation",
+        type: "vector3",
+        default: [0, 0, 0],
+        category: "Misc",
+        description: "Rotation of the mesh.",
+    },
+    {
+        name: "scaling",
+        label: "Scaling",
+        type: "vector3",
+        default: [1, 1, 1],
+        category: "Misc",
+        description: "Scaling of the mesh.",
+    },
+    {
+        name: "billboardMode",
+        label: "Billboard Mode",
+        type: "enum",
+        default: 0,
+        category: "Misc",
+        description: "Billboard mode of the mesh.",
+        enum: [
+            {
+                label: "None",
+                value: 0,
+                description: "Object will not rotate to face the camera",
+            },
+            {
+                label: "X",
+                value: 1,
+                description: "Object will rotate to face the camera but only on the x axis",
+            },
+            {
+                label: "Y",
+                value: 2,
+                description: "Object will rotate to face the camera but only on the y axis",
+            },
+            {
+                label: "Z",
+                value: 4,
+                description: "Object will rotate to face the camera but only on the z axis",
+            },
+            {
+                label: "All",
+                value: 7,
+                description: "Object will rotate to face the camera on all axes",
+            },
+            {
+                label: "Use Position",
+                value: 128,
+                description: "Object will rotate to face the camera's position instead of orientation",
+            },
+        ],
+    },
+    {
+        name: "preserveParentRotationForBillboard",
+        label: "Preserve Parent Rotation For Billboard",
+        type: "boolean",
+        default: false,
+        category: "Misc",
+        description: `Gets or sets a boolean indicating that parent rotation should be preserved when using billboards.
+            This could be useful for glTF objects where parent rotation helps converting from right handed to left handed`,
+    },
+    {
+        name: "scalingDeterminant",
+        label: "Scaling Determinant",
+        type: "number",
+        default: 1,
+        category: "Misc",
+        description: "Multiplication factor on scale x/y/z when computing the world matrix. Eg. for a 1x1x1 cube setting this to 2 will make it a 2x2x2 cube",
+    },
+    {
+        name: "infiniteDistance",
+        label: "Infinite Distance",
+        type: "boolean",
+        default: false,
+        category: "Misc",
+        description: "Gets or sets the distance of the object to max, often used by skybox",
+    },
+    {
+        name: "ignoreNonUniformScaling",
+        label: "Ignore Non Uniform Scaling",
+        type: "boolean",
+        default: false,
+        category: "Misc",
+        description: `Gets or sets a boolean indicating that non uniform scaling (when at least one component is different from others) should be ignored.
+            By default the system will update normals to compensate`,
+    },
+    {
+        name: "reIntegrateRotationIntoRotationQuaternion",
+        label: "Re Integrate Rotation Into Rotation Quaternion",
+        type: "boolean",
+        default: false,
+        category: "Misc",
+        description: "Gets or sets a boolean indicating that even if rotationQuaternion is defined, you can keep updating rotation property and Babylon.js will just mix both",
+    },
+];

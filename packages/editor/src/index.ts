@@ -31,7 +31,7 @@ window.addEventListener("load", () => {
             });
             addObject.addEventListener("click", (e) => {
                 e.preventDefault();
-                addObjectMenu.style.display = "block";
+                addObjectMenu.style.display = addObjectMenu.style.display === "block" ? "none" : "block";
             });
             addScene?.addEventListener("click", (e) => {
                 e.preventDefault();

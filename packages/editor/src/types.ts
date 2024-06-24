@@ -9,6 +9,7 @@ export type InspectorType =
     | "vector3"
     | "vector4"
     | "texture"
+    | "material"
     | "observable"
     | "reference";
 
