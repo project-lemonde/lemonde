@@ -1,6 +1,6 @@
 import type { InspectorContent } from "../types";
 
-export const TransformNodeInspector: readonly InspectorContent[] = [
+export const MeshInspector: readonly InspectorContent[] = [
     {
         name: "name",
         label: "Name",

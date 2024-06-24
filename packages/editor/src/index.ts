@@ -7,8 +7,10 @@ import type { Scene } from "@babylonjs/core/scene";
 import { AddDirectionalLightCommand } from "./commands/addDirectionalLightCommand";
 import { AddSceneCommand } from "./commands/addSceneCommand";
 import { DirectionalLightInspector } from "./inspectors/directionalLightInspector";
+import { MeshInspector } from "./inspectors/meshInspector";
 import { SceneInspector } from "./inspectors/sceneInspector";
 import type { InspectorContent } from "./types";
+import { AddBoxCommand } from "./commands/addBoxCommand";
 
 window.addEventListener("load", () => {
     const canvas = document.getElementById("render-canvas") as HTMLCanvasElement | undefined;
@@ -19,6 +21,7 @@ window.addEventListener("load", () => {
     const addObjectMenu = document.getElementById("add-object-menu") as HTMLDivElement;
     const addScene = document.querySelector<HTMLButtonElement>("#add-object-menu [data-target='Scene']");
     const addDirectionalLight = document.querySelector<HTMLButtonElement>("#add-object-menu [data-target='DirectionalLight']");
+    const addBox = document.querySelector<HTMLButtonElement>("#add-object-menu [data-target='Box']");
     const inspector = document.getElementById("inspector") as HTMLDivElement;
     const hierarchyList = document.getElementById("hierarchy-list") as HTMLUListElement;
     let activeScene: Scene | null = null;
@@ -29,9 +32,13 @@ window.addEventListener("load", () => {
                     activeScene.render();
                 }
             });
+
+            const toggleObjectMenu = () => {
+                addObjectMenu.style.display = addObjectMenu.style.display === "block" ? "none" : "block";
+            };
             addObject.addEventListener("click", (e) => {
                 e.preventDefault();
-                addObjectMenu.style.display = addObjectMenu.style.display === "block" ? "none" : "block";
+                toggleObjectMenu();
             });
             addScene?.addEventListener("click", (e) => {
                 e.preventDefault();
@@ -43,7 +50,7 @@ window.addEventListener("load", () => {
                     t.remove();
                 }
                 inspector.appendChild(table);
-                addObjectMenu.style.display = "none";
+                toggleObjectMenu();
                 const button = document.createElement("button");
                 button.textContent = "Default Scene";
                 const li = document.createElement("li");
@@ -65,7 +72,20 @@ window.addEventListener("load", () => {
                     t.remove();
                 }
                 inspector.appendChild(table);
-                addObjectMenu.style.display = "none";
+                toggleObjectMenu();
+            });
+            addBox?.addEventListener("click", (e) => {
+                e.preventDefault();
+                if (!activeScene) {
+                    return;
+                }
+                const { mesh } = AddBoxCommand({ scene: activeScene });
+                const table = createInspector(mesh, MeshInspector);
+                for (const t of inspector.getElementsByTagName("table")) {
+                    t.remove();
+                }
+                inspector.appendChild(table);
+                toggleObjectMenu();
             });
         });
 }, { once: true });
