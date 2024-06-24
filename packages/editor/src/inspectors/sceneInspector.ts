@@ -1,4 +1,4 @@
-import type { InspectorContent } from "./types";
+import type { InspectorContent } from "../types";
 
 export const SceneInspector: readonly InspectorContent[] = [
     {
@@ -300,7 +300,7 @@ export const SceneInspector: readonly InspectorContent[] = [
         name: "defaultCursor",
         label: "Default Cursor",
         type: "enum",
-        default: "none",
+        default: "default",
         category: "Misc",
         description: "Defines the HTML default cursor to use (empty by default)",
         enum: [

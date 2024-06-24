@@ -2,9 +2,13 @@ import type { AbstractEngine } from "@babylonjs/core/Engines/abstractEngine";
 import { Engine } from "@babylonjs/core/Engines/engine";
 import "@babylonjs/core/Materials/standardMaterial";
 import { Color4 } from "@babylonjs/core/Maths/math.color";
-import { SceneInspector } from "./sceneInspector";
-import type { InspectorContent } from "./types";
+import { Vector3 } from "@babylonjs/core/Maths/math.vector";
+import type { Scene } from "@babylonjs/core/scene";
+import { AddDirectionalLightCommand } from "./commands/addDirectionalLightCommand";
 import { AddSceneCommand } from "./commands/addSceneCommand";
+import { DirectionalLightInspector } from "./inspectors/directionalLightInspector";
+import { SceneInspector } from "./inspectors/sceneInspector";
+import type { InspectorContent } from "./types";
 
 window.addEventListener("load", () => {
     const canvas = document.getElementById("render-canvas") as HTMLCanvasElement | undefined;
@@ -14,18 +18,49 @@ window.addEventListener("load", () => {
     const addObject = document.getElementById("add-object") as HTMLButtonElement;
     const addObjectMenu = document.getElementById("add-object-menu") as HTMLDivElement;
     const addScene = document.querySelector<HTMLButtonElement>("#add-object-menu [data-target='Scene']");
+    const addDirectionalLight = document.querySelector<HTMLButtonElement>("#add-object-menu [data-target='DirectionalLight']");
     const inspector = document.getElementById("inspector") as HTMLDivElement;
+    const hierarchyList = document.getElementById("hierarchy-list") as HTMLUListElement;
+    let activeScene: Scene | null = null;
     initEngineAsync(canvas)
         .then(({ engine }) => {
+            engine.runRenderLoop(() => {
+                if (activeScene) {
+                    activeScene.render();
+                }
+            });
             addObject.addEventListener("click", (e) => {
                 e.preventDefault();
                 addObjectMenu.style.display = "block";
             });
             addScene?.addEventListener("click", (e) => {
                 e.preventDefault();
-                const result = AddSceneCommand({ engine });
-                result.camera.attachControl(true);
-                const table = createSceneInspector(result.scene);
+                const { scene, camera } = AddSceneCommand({ engine });
+                activeScene = scene;
+                camera.attachControl(true);
+                const table = createInspector(scene, SceneInspector);
+                for (const t of inspector.getElementsByTagName("table")) {
+                    t.remove();
+                }
+                inspector.appendChild(table);
+                addObjectMenu.style.display = "none";
+                const button = document.createElement("button");
+                button.textContent = "Default Scene";
+                const li = document.createElement("li");
+                li.appendChild(button);
+                hierarchyList.appendChild(li);
+            });
+            addDirectionalLight?.addEventListener("click", (e) => {
+                e.preventDefault();
+                if (!activeScene) {
+                    return;
+                }
+                const { light } = AddDirectionalLightCommand({
+                    scene: activeScene,
+                    direction: new Vector3(0, -1, 0),
+                    position: new Vector3(0, 5, 0),
+                });
+                const table = createInspector(light, DirectionalLightInspector);
                 for (const t of inspector.getElementsByTagName("table")) {
                     t.remove();
                 }
@@ -46,10 +81,10 @@ async function initEngineAsync(canvas: HTMLCanvasElement): Promise<{ engine: Abs
 }
 
 // biome-ignore lint/suspicious/noExplicitAny: Dynamic property assignment
-function  createSceneInspector(sceneAny: any): HTMLTableElement {
+function createInspector(target: any, props: readonly InspectorContent[]): HTMLTableElement {
     const table = document.createElement("table");
     const tbody = table.createTBody();
-    for (const prop of SceneInspector) {
+    for (const prop of props) {
         const tr = tbody.insertRow();
         const td1 = tr.insertCell();
         const label = document.createElement("label");
@@ -60,7 +95,7 @@ function  createSceneInspector(sceneAny: any): HTMLTableElement {
         }
         td1.appendChild(label);
         const td2 = tr.insertCell();
-        const input = createInput(sceneAny, prop);
+        const input = createInput(target, prop);
         if (input) {
             td2.appendChild(input);
         }
@@ -112,6 +147,7 @@ function createInput(target: any, prop: InspectorContent): HTMLInputElement | HT
                 const option = document.createElement("option");
                 option.value = e.value.toString();
                 option.textContent = e.label;
+                option.selected = e.value === prop.default;
                 select.appendChild(option);
             }
             select.addEventListener("change", () => {
@@ -125,7 +161,7 @@ function createInput(target: any, prop: InspectorContent): HTMLInputElement | HT
             colorInput.id = prop.name;
             colorInput.name = prop.name;
             colorInput.type = "color";
-            colorInput.value = prop.default?.toString() ?? "";
+            colorInput.value = Color4.FromArray(prop.default as number[] ?? [1, 1, 1, 1]).toHexString();
             colorInput.addEventListener("change", () => {
                 target[prop.name] = Color4.FromHexString(colorInput.value);
             });
