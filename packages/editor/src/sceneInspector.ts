@@ -1,4 +1,14 @@
-export const SceneInspector = [
+import type { InspectorContent } from "./types";
+
+export const SceneInspector: readonly InspectorContent[] = [
+    {
+        name: "name",
+        label: "Name",
+        type: "text",
+        default: "Default Scene",
+        category: "Misc",
+        description: "The name of the scene",
+    },
     {
         name: "autoClear",
         label: "Auto Clear",
@@ -997,7 +1007,8 @@ export const SceneInspector = [
     {
         name: "activeCamera",
         label: "Active Camera",
-        type: "camera",
+        type: "reference",
+        referenceType: "Camera",
         default: null,
         category: "Misc",
         description: "Gets or sets the active camera",
@@ -1005,7 +1016,8 @@ export const SceneInspector = [
     {
         name: "defaultMaterial",
         label: "Default Material",
-        type: "material",
+        type: "reference",
+        referenceType: "Material",
         default: null,
         category: "Misc",
         description: "The default material used on meshes when no material is affected",
