@@ -1,16 +1,16 @@
 import type { AbstractEngine } from "@babylonjs/core/Engines/abstractEngine";
 import { Engine } from "@babylonjs/core/Engines/engine";
 import "@babylonjs/core/Materials/standardMaterial";
-import { Color4 } from "@babylonjs/core/Maths/math.color";
+import { Color3 } from "@babylonjs/core/Maths/math.color";
 import { Vector3 } from "@babylonjs/core/Maths/math.vector";
 import type { Scene } from "@babylonjs/core/scene";
+import { AddBoxCommand } from "./commands/addBoxCommand";
 import { AddDirectionalLightCommand } from "./commands/addDirectionalLightCommand";
 import { AddSceneCommand } from "./commands/addSceneCommand";
 import { DirectionalLightInspector } from "./inspectors/directionalLightInspector";
 import { MeshInspector } from "./inspectors/meshInspector";
 import { SceneInspector } from "./inspectors/sceneInspector";
 import type { InspectorContent } from "./types";
-import { AddBoxCommand } from "./commands/addBoxCommand";
 
 window.addEventListener("load", () => {
     const canvas = document.getElementById("render-canvas") as HTMLCanvasElement | undefined;
@@ -50,10 +50,7 @@ window.addEventListener("load", () => {
                 activeScene = scene;
                 camera.attachControl(true);
                 const table = createInspector(scene, SceneInspector);
-                for (const t of inspector.getElementsByTagName("table")) {
-                    t.remove();
-                }
-                inspector.appendChild(table);
+                replaceInspector(table);
                 toggleObjectMenu();
                 const button = document.createElement("button");
                 button.textContent = "Default Scene";
@@ -179,9 +176,9 @@ function createInput(target: any, prop: InspectorContent): HTMLInputElement | HT
             colorInput.id = prop.name;
             colorInput.name = prop.name;
             colorInput.type = "color";
-            colorInput.value = Color4.FromArray(prop.default as number[] ?? [1, 1, 1, 1]).toHexString();
+            colorInput.value = Color3.FromArray(prop.default as number[] ?? [1, 1, 1, 1]).toHexString();
             colorInput.addEventListener("change", () => {
-                target[prop.name] = Color4.FromHexString(colorInput.value);
+                target[prop.name] = Color3.FromHexString(colorInput.value);
             });
             return colorInput;
         }
@@ -191,7 +188,19 @@ function createInput(target: any, prop: InspectorContent): HTMLInputElement | HT
         case "observable": {
             break;
         }
+        case "material": {
+            break;
+        }
+        case "reference": {
+            break;
+        }
+        case "vector2": {
+            break;
+        }
         case "vector3": {
+            break;
+        }
+        case "vector4": {
             break;
         }
     }
