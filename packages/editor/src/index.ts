@@ -12,6 +12,9 @@ import { MeshInspector } from "./inspectors/meshInspector";
 import { SceneInspector } from "./inspectors/sceneInspector";
 import type { InspectorContent } from "./types";
 
+const assets: { [key: string]: unknown } = {};
+const instances: { [key: string]: unknown } = {};
+
 window.addEventListener("load", () => {
     const canvas = document.getElementById("render-canvas") as HTMLCanvasElement | undefined;
     if (!canvas) {
@@ -119,7 +122,7 @@ function createInspector(target: any, props: readonly InspectorContent[]): HTMLT
 }
 
 // biome-ignore lint/suspicious/noExplicitAny: Dynamic property assignment
-function createInput(target: any, prop: InspectorContent): HTMLInputElement | HTMLSelectElement | undefined {
+function createInput(target: any, prop: InspectorContent) {
     switch (prop.type) {
         case "number": {
             const numberInput = document.createElement("input");

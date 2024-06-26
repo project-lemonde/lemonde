@@ -49,13 +49,49 @@
             padding-left: 0.5rem;
         }
 
-        #root {
+        #menu-bar {
+            width: 100%;
+
+            >ul {
+                display: flex;
+                position: relative;
+                padding: 0;
+                list-style: none;
+                background-color: light-dark(#9E98AA, #150F20);
+
+                >li {
+                    >button {
+                        display: block;
+                        min-width: 5rem;
+                        border: none;
+                        line-height: 1.3rem;
+                        background-color: light-dark(#9E98AA, #150F20);
+                        color: light-dark(#FDF6FF, #150F20);
+
+                        &:hover {
+                            background-color: light-dark(#AEA8BA, #150F20);
+                            cursor: pointer;
+                        }
+
+                        &:active {
+                            background-color: light-dark(#BEB8CA, #150F20);
+                        }
+                    }
+
+                    ul {
+                        display: none;
+                        list-style: none;
+                    }
+                }
+            }
+        }
+
+        main {
             display: flex;
         }
 
         #renderer {
             width: 100%;
-            height: 100vh;
         }
 
         #render-canvas {
@@ -107,32 +143,211 @@
 
 <body>
     <div id="root">
-        <div id="renderer">
-            <canvas id="render-canvas"></canvas>
-        </div>
-        <div id="property">
-            <div id="hierarchy">
-                <h2>
-                    Hierarchy
-                    <button type="button" id="add-object">
-                        +
-                    </button>
-                    <ul id="add-object-menu">
-                        <li><button type="button" data-target="Scene">Scene</button></li>
-                        <li><button type="button" data-target="DirectionalLight">DirectionalLight</button></li>
-                        <li><button type="button" data-target="TransformNode">TransformNode</button></li>
-                        <li><button type="button" data-target="Box">Box</button></li>
-                        <li><button type="button" data-target="Ground">Ground</button></li>
+        <nav id="menu-bar">
+            <ul>
+                <li>
+                    <button type="button">File</button>
+                    <ul>
+                        <li><button type="button">New Scene</button></li>
+                        <li><button type="button">Scene Preference</button></li>
                     </ul>
-                </h2>
-                <div id="hierarchy-content">
-                    <ul id="hierarchy-list">
+                </li>
+                <li>
+                    <button type="button">Edit</button>
+                    <ul>
+                        <li><button type="button" disabled>Undo</button></li>
+                        <li><button type="button" disabled>Redo</button></li>
+                        <li><button type="button">Editor Preference</button></li>
                     </ul>
+                </li>
+                <li>
+                    <button type="button">Create</button>
+                    <ul>
+                        <li>
+                            <button type="button">Cameras</button>
+                            <ul>
+                                <li><button type="button">Arc Rotate Camera</button></li>
+                                <li><button type="button">Device Orientation Camera</button></li>
+                                <li><button type="button">Fly Camera</button></li>
+                                <li><button type="button">Follow Camera</button></li>
+                                <li><button type="button">Free Camera</button></li>
+                                <li><button type="button">Gamepad Camera</button></li>
+                                <li><button type="button">Target Camera</button></li>
+                                <li><button type="button">Touch Camera</button></li>
+                                <li><button type="button">Universal Camera</button></li>
+                                <li><button type="button">Virtual Joysticks Camera</button></li>
+                                <li><button type="button">Anaglyph Arc Rotate Camera</button></li>
+                                <li><button type="button">Anaglyph Free Camera</button></li>
+                                <li><button type="button">Anaglyph Gamepad Camera</button></li>
+                                <li><button type="button">Anaglyph Universal Camera</button></li>
+                                <li><button type="button">Stereoscopic Arc Rotate Camera</button></li>
+                                <li><button type="button">Stereoscopic Free Camera</button></li>
+                                <li><button type="button">Stereoscopic Gamepad Camera</button></li>
+                                <li><button type="button">Stereoscopic Screen Universal Camera</button></li>
+                                <li><button type="button">Stereoscopic Universal Camera</button></li>
+                                <li><button type="button">VR Device Orientation Arc Rotate Camera</button></li>
+                                <li><button type="button">VR Device Orientation Free Camera</button></li>
+                                <li><button type="button">VR Device Orientation Gamepad Camera</button></li>
+
+                            </ul>
+                        </li>
+                        <li>
+                            <button type="button">Lights</button>
+                            <ul>
+                                <li><button type="button">Directional Light</button></li>
+                                <li><button type="button">Hemispheric Light</button></li>
+                                <li><button type="button">Point Light</button></li>
+                                <li><button type="button">Spot Light</button></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <button type="button">Shadows</button>
+                            <ul>
+                                <li><button type="button">Shadow Generator</button></li>
+                                <li><button type="button">Cascaded Shadow Generator</button></li>
+                            </ul>
+                        </li>
+                        <li><button type="button">Group</button></li>
+                        <li>
+                            <button type="button">Meshes</button>
+                            <ul>
+                                <li><button type="button">Box</button></li>
+                                <li><button type="button">Capsule</button></li>
+                                <li><button type="button">Cylinder</button></li>
+                                <li><button type="button">Decal</button></li>
+                                <li><button type="button">Disc</button></li>
+                                <li><button type="button">Geodesic</button></li>
+                                <li><button type="button">Goldberg</button></li>
+                                <li><button type="button">Greased Line</button></li>
+                                <li><button type="button">Ground</button></li>
+                                <li><button type="button">Hemisphere</button></li>
+                                <li><button type="button">Ico Sphere</button></li>
+                                <li><button type="button">Lathe</button></li>
+                                <li><button type="button">Lines</button></li>
+                                <li><button type="button">Plane</button></li>
+                                <li><button type="button">Polygon</button></li>
+                                <li><button type="button">Polyhedron</button></li>
+                                <li><button type="button">Ribbon</button></li>
+                                <li><button type="button">Shape</button></li>
+                                <li><button type="button">Sphere</button></li>
+                                <li><button type="button">Text</button></li>
+                                <li><button type="button">Tiled Box</button></li>
+                                <li><button type="button">Tiled Plane</button></li>
+                                <li><button type="button">Torus</button></li>
+                                <li><button type="button">Torus Knot</button></li>
+                                <li><button type="button">Tube</button></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <button type="button">Materials</button>
+                            <ul>
+                                <li><button type="button">Standard Material</button></li>
+                                <li><button type="button">Multi Material</button></li>
+                                <li><button type="button">Shader Material</button></li>
+                                <li><button type="button">Background Material</button></li>
+                                <li><button type="button">Gaussian Splatting Material</button></li>
+                                <li><button type="button">Greased Line Simple Material</button></li>
+                                <li><button type="button">Node Material</button></li>
+                                <li><button type="button">Occulusion Material</button></li>
+                                <li><button type="button">PBR Material</button></li>
+                                <li><button type="button">PBR Metallic Roughness Material</button></li>
+                                <li><button type="button">PBR Specular Glossiness Material</button></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <button type="button">Material Plugins</button>
+                            <ul>
+                                <li><button type="button">Color Curves</button></li>
+                                <li><button type="button">Fresnel Parameters</button></li>
+                                <li><button type="button">Image Processing Configuration</button></li>
+                                <li><button type="button">Decal Map</button></li>
+                                <li><button type="button">Detail Map</button></li>
+                                <li><button type="button">Mesh Debug</button></li>
+                                <li><button type="button">Pre Pass Configuration</button></li>
+                                <li><button type="button">PBR Anisotropic Configuration</button></li>
+                                <li><button type="button">PBR BRDF Configuration</button></li>
+                                <li><button type="button">PBR Clear Coat Configuration</button></li>
+                                <li><button type="button">PBR Iridescence Configuration</button></li>
+                                <li><button type="button">PBR Sheen Configuration</button></li>
+                                <li><button type="button">PBR Sub Surface Configuration</button></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <button type="button">Render Pipelines</button>
+                            <ul>
+                                <li><button type="button">Default Rendering Pipeline</button></li>
+                                <li><button type="button">Lens Rendering Pipeline</button></li>
+                                <li><button type="button">SSAO2 Rendering Pipeline</button></li>
+                                <li><button type="button">SSAO Rendering Pipeline</button></li>
+                                <li><button type="button">SSR Rendering Pipeline</button></li>
+                                <li><button type="button">Standard Rendering Pipeline</button></li>
+                                <li><button type="button">TAA Rendering Pipeline</button></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <button type="button">Textures</button>
+                            <ul>
+                                <li><button type="button">Alpha Raw Texture</button></li>
+                                <li><button type="button">Color Grading Texture</button></li>
+                                <li><button type="button">Cube Texture</button></li>
+                                <li><button type="button">Custom Procedural Texture</button></li>
+                                <li><button type="button">Dynamic Texture</button></li>
+                                <li><button type="button">Equi Rectangular Cube Texture</button></li>
+                                <li><button type="button">External Texture</button></li>
+                                <li><button type="button">HDR Cube Texture</button></li>
+                                <li><button type="button">Html Element Texture</button></li>
+                                <li><button type="button">Luminance Alpha Raw Texture</button></li>
+                                <li><button type="button">Luminance Raw Texture</button></li>
+                                <li><button type="button">Mirror Texture</button></li>
+                                <li><button type="button">Noise Procedural Texture</button></li>
+                                <li><button type="button">Procedural Texture</button></li>
+                                <li><button type="button">R Raw Texture</button></li>
+                                <li><button type="button">R Storage Raw Texture</button></li>
+                                <li><button type="button">Raw Cube Texture</button></li>
+                                <li><button type="button">Raw Texture 3D</button></li>
+                                <li><button type="button">Refraction Texture</button></li>
+                                <li><button type="button">Render Target Texture</button></li>
+                                <li><button type="button">RGB Raw Texture</button></li>
+                                <li><button type="button">RGBA Raw Texture 2D Array</button></li>
+                                <li><button type="button">RGBA Raw Texture</button></li>
+                                <li><button type="button">RGBA Storage Raw Texture</button></li>
+                                <li><button type="button">Texture</button></li>
+                                <li><button type="button">Video Texture</button></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <button type="button">Help</button>
+                    <ul>
+                        <li><button type="button">Version</button></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+        <main>
+            <div id="renderer">
+                <canvas id="render-canvas"></canvas>
+            </div>
+            <div id="property">
+                <div id="hierarchy">
+                    <h2>Hierarchy</h2>
+                    <div id="hierarchy-content">
+                        <ul id="hierarchy-list">
+                        </ul>
+                    </div>
+                </div>
+                <div id="inspector">
+                    <h2>Inspector</h2>
+                    <div id="inspector-content"></div>
                 </div>
             </div>
-            <div id="inspector">
-                <h2>Inspector</h2>
-                <div id="inspector-content"></div>
+        </main>
+        <div id="assets">
+            <h2>Assets</h2>
+            <div id="assets-content">
+                <div id="assets-tree"></div>
+                <div id="assets-viewer"></div>
             </div>
         </div>
     </div>
