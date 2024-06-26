@@ -8,9 +8,6 @@ export type InspectorType =
     | "vector2"
     | "vector3"
     | "vector4"
-    | "texture"
-    | "material"
-    | "observable"
     | "reference";
 
 export type InspectorContent = Readonly<{
@@ -18,7 +15,6 @@ export type InspectorContent = Readonly<{
     label: string;
     type: InspectorType;
     default?: unknown;
-    observableType?: string;
     referenceType?: string;
     category: string;
     description?: string;

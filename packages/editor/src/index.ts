@@ -126,7 +126,7 @@ function createInput(target: any, prop: InspectorContent): HTMLInputElement | HT
             numberInput.id = prop.name;
             numberInput.name = prop.name;
             numberInput.type = "number";
-            numberInput.value = prop.default?.toString() ?? "";
+            numberInput.value = target[prop.name] ?? prop.default?.toString() ?? "";
             numberInput.addEventListener("change", () => {
                 target[prop.name] = Number.parseFloat(numberInput.value);
             });
@@ -137,7 +137,7 @@ function createInput(target: any, prop: InspectorContent): HTMLInputElement | HT
             stringInput.id = prop.name;
             stringInput.name = prop.name;
             stringInput.type = "text";
-            stringInput.value = prop.default?.toString() ?? "";
+            stringInput.value = target[prop.name] ?? prop.default?.toString() ?? "";
             stringInput.addEventListener("change", () => {
                 target[prop.name] = stringInput.value;
             });
@@ -148,7 +148,7 @@ function createInput(target: any, prop: InspectorContent): HTMLInputElement | HT
             booleanInput.id = prop.name;
             booleanInput.name = prop.name;
             booleanInput.type = "checkbox";
-            booleanInput.checked = !!prop.default;
+            booleanInput.checked = target[prop.name] ?? !!prop.default;
             booleanInput.addEventListener("click", () => {
                 target[prop.name] = booleanInput.checked;
             });
@@ -162,7 +162,7 @@ function createInput(target: any, prop: InspectorContent): HTMLInputElement | HT
                 const option = document.createElement("option");
                 option.value = e.value.toString();
                 option.textContent = e.label;
-                option.selected = e.value === prop.default;
+                option.selected = e.value === (target[prop.name] ?? prop.default);
                 select.appendChild(option);
             }
             select.addEventListener("change", () => {
@@ -176,20 +176,11 @@ function createInput(target: any, prop: InspectorContent): HTMLInputElement | HT
             colorInput.id = prop.name;
             colorInput.name = prop.name;
             colorInput.type = "color";
-            colorInput.value = Color3.FromArray(prop.default as number[] ?? [1, 1, 1, 1]).toHexString();
+            colorInput.value = Color3.FromArray(target[prop.name] ?? prop.default as number[] ?? [1, 1, 1]).toHexString();
             colorInput.addEventListener("change", () => {
                 target[prop.name] = Color3.FromHexString(colorInput.value);
             });
             return colorInput;
-        }
-        case "texture": {
-            break;
-        }
-        case "observable": {
-            break;
-        }
-        case "material": {
-            break;
         }
         case "reference": {
             break;
