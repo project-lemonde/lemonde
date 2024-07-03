@@ -12,9 +12,6 @@ import { MeshInspector } from "./inspectors/meshInspector";
 import { SceneInspector } from "./inspectors/sceneInspector";
 import type { InspectorContent } from "./types";
 
-const assets: { [key: string]: unknown } = {};
-const instances: { [key: string]: unknown } = {};
-
 window.addEventListener("load", () => {
     const canvas = document.getElementById("render-canvas") as HTMLCanvasElement | undefined;
     if (!canvas) {
