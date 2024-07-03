@@ -15,7 +15,6 @@
         "skipLibCheck": true,
         "resolveJsonModule": true,
         "isolatedModules": true,
-        "experimentalDecorators": false,
         "noUnusedLocals": true,
         "noUnusedParameters": true,
         "noEmit": true
