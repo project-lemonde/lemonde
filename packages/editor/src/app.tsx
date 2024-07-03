@@ -1,11 +1,11 @@
 import { StrictMode } from "react";
-import { Nav } from "./components/nav";
+import { MenuBar } from "./components/menuBar";
 
 export function App() {
     return (
         <StrictMode>
             <div>
-                <Nav />
+                <MenuBar />
             </div>
         </StrictMode>
     );
