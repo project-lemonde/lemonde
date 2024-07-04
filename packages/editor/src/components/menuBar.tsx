@@ -10,7 +10,7 @@ import {
 
 export function MenuBar() {
     return (
-        <Toolbar aria-label="nav">
+        <Toolbar aria-label="nav" size="small">
             <Menu>
                 <MenuTrigger>
                     <ToolbarButton aria-label="File">File</ToolbarButton>
