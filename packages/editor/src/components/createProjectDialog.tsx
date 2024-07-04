@@ -19,7 +19,8 @@ import {
     SpinButton,
     Tooltip,
 } from "@fluentui/react-components";
-import { useState, type FormEvent } from "react";
+import { useEffect, useState, type FormEvent } from "react";
+import { useProjectStore } from "../stores/projectStore";
 
 type EngineOption = {
     name: string;
@@ -316,23 +317,25 @@ const useStyles = makeStyles({
     },
 });
 
-interface CreateProjectDialogProp {
-    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-    handleSubmit?: (projectName: string, engine: string, engineOption: any) => void;
-}
-
-export function CreateProjectDialog({ handleSubmit }: CreateProjectDialogProp) {
+export function CreateProjectDialog() {
     const styles = useStyles();
     const [projectName, setProjectName] = useState("New Project");
     const [engine, setEngine] = useState("webgl2");
-    const advancedOptions = (engine === "webgl2" || engine === "webgl1") ? webglEngineOptions : webgpuEngineOptions;
     const [engineOptions, setEngineOptions] = useState<Record<string, unknown>>({});
+    const projectProperty = useProjectStore((state) => state.projectProperty);
+    const setProjectProperty = useProjectStore((state) => state.setProjectProperty);
+    const advancedOptions = (engine === "webgl2" || engine === "webgl1") ? webglEngineOptions : webgpuEngineOptions;
+
+    useEffect(() => {
+        document.title = `Project LeMonde EDITOR - ${projectProperty?.name || "Create Project"}`;
+        return () => {
+            document.title = "Project LeMonde EDITOR";
+        };
+    }, [projectProperty]);
 
     function handleSubmitForm(e: FormEvent) {
         e.preventDefault();
-        if (handleSubmit) {
-            handleSubmit(projectName, engine, engineOptions);
-        }
+        setProjectProperty({ name: projectName, engineType: engine, engineOptions });
     }
 
     return (
