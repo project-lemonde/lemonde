@@ -1,8 +1,8 @@
-import { StrictMode, useContext } from "react";
+import { StrictMode } from "react";
 import { MenuBar } from "./components/menuBar";
-import { EngineContext } from "./contexts/useEngine";
 import { makeStyles } from "@fluentui/react-components";
 import { CreateProjectDialog } from "./components/createProjectDialog";
+import { useEngineStore } from "./stores/engineStore";
 
 const useStyles = makeStyles({
     createProject: {
@@ -15,7 +15,7 @@ const useStyles = makeStyles({
 
 export function App() {
     const styles = useStyles();
-    const engine = useContext(EngineContext);
+    const engine = useEngineStore((state) => state.engine);
 
     const main = engine && <main><MenuBar /></main> || <main className={styles.createProject}><CreateProjectDialog /></main>;
 

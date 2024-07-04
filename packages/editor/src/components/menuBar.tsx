@@ -18,7 +18,6 @@ export function MenuBar() {
 
                 <MenuPopover>
                     <MenuList>
-                        <MenuItem>New Project</MenuItem>
                         <MenuItem>New Scene</MenuItem>
                     </MenuList>
                 </MenuPopover>

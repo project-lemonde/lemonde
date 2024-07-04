@@ -316,24 +316,33 @@ const useStyles = makeStyles({
     },
 });
 
-export function CreateProjectDialog() {
+interface CreateProjectDialogProp {
+    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+    handleSubmit?: (projectName: string, engine: string, engineOption: any) => void;
+}
+
+export function CreateProjectDialog({ handleSubmit }: CreateProjectDialogProp) {
     const styles = useStyles();
     const [projectName, setProjectName] = useState("New Project");
     const [engine, setEngine] = useState("webgl2");
     const advancedOptions = (engine === "webgl2" || engine === "webgl1") ? webglEngineOptions : webgpuEngineOptions;
+    const [engineOptions, setEngineOptions] = useState<Record<string, unknown>>({});
 
-    function handleSubmit(e: FormEvent) {
+    function handleSubmitForm(e: FormEvent) {
         e.preventDefault();
+        if (handleSubmit) {
+            handleSubmit(projectName, engine, engineOptions);
+        }
     }
 
     return (
         <Dialog modalType="modal" defaultOpen={true}>
             <DialogTrigger disableButtonEnhancement={true}>
-                <Button>Create new project</Button>
+                <Button size="large">Create new project</Button>
             </DialogTrigger>
 
             <DialogSurface aria-describedby={undefined}>
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={handleSubmitForm}>
                     <DialogBody>
                         <DialogTitle>Create new project</DialogTitle>
                         <DialogContent className={styles.content}>
@@ -353,14 +362,19 @@ export function CreateProjectDialog() {
                             </Select>
                             <Accordion collapsible={true}>
                                 <AccordionItem value="1">
-                                    <AccordionHeader size="small">Advanced</AccordionHeader>
+                                    <AccordionHeader size="small">Engine options</AccordionHeader>
                                     <AccordionPanel>
                                         <div>
                                             {advancedOptions.map((opt) => (
                                                 <div key={opt.name}>
                                                     {opt.type === "boolean" && (
                                                         <>
-                                                            <Checkbox id={opt.name} name={opt.name} defaultChecked={!!opt.default} />
+                                                            <Checkbox
+                                                                id={opt.name}
+                                                                name={opt.name}
+                                                                defaultChecked={!!opt.default}
+                                                                onChange={(e) => setEngineOptions({...engineOptions, [opt.name]: e.target.checked})}
+                                                            />
                                                             <Tooltip content={opt.description} relationship="label">
                                                                 <Label htmlFor={opt.name}>{opt.name}</Label>
                                                             </Tooltip>
@@ -371,7 +385,11 @@ export function CreateProjectDialog() {
                                                             <Tooltip content={opt.description} relationship="label">
                                                                 <Label htmlFor={opt.name}>{opt.name}</Label>
                                                             </Tooltip>
-                                                            <SpinButton id={opt.name} name={opt.name} />
+                                                            <SpinButton
+                                                                id={opt.name}
+                                                                name={opt.name}
+                                                                onInput={(e) => setEngineOptions({...engineOptions, [opt.name]: (e.target as HTMLInputElement).valueAsNumber})}
+                                                            />
                                                         </>
                                                     )}
                                                     {opt.type === "enum" && (
@@ -379,7 +397,7 @@ export function CreateProjectDialog() {
                                                             <Tooltip content={opt.description} relationship="label">
                                                                 <Label htmlFor={opt.name}>{opt.name}</Label>
                                                             </Tooltip>
-                                                            <Select id={opt.name} name={opt.name}>
+                                                            <Select id={opt.name} name={opt.name} onChange={(e) => setEngineOptions({...engineOptions, [opt.name]: e.target.value})}>
                                                                 {opt.enum?.map((value) => (
                                                                     <option key={value} value={value}>
                                                                         {value}
