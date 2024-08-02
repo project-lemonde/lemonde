@@ -1,4 +1,4 @@
-import type { InspectorContent } from "../types";
+import type { InspectorContent } from "../../types";
 
 export const DirectionalLightInspector: readonly InspectorContent[] = [
     {

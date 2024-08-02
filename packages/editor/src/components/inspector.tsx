@@ -28,7 +28,7 @@ function transformInspectorContent(content: InspectorContent) {
                 <div>
                     <Label htmlFor="enum">{content.label}</Label>
                     <Select size="small">
-                        {content.enum?.map((value) => (<option key={value.value}>{value.label}</option>))}
+                        {content.enum?.map((value) => (<option key={value.value} value={value.value}>{value.label}</option>))}
                     </Select>
                 </div>
             )
