@@ -1,0 +1,19 @@
+{
+    "name": "@project-lemonde/editor2",
+    "type": "module",
+    "private": true,
+    "license": "UNLICENSED",
+    "scripts": {
+        "dev": "vite",
+        "build": "tsc && vite build",
+        "preview": "vite preview"
+    },
+    "dependencies": {
+        "@babylonjs/core": "^7.18.0",
+        "@babylonjs/materials": "^7.18.0",
+        "@babylonjs/loaders": "^7.18.0"
+    },
+    "devDependencies": {
+        "vite": "^5.3.5"
+    }
+}
