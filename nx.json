@@ -1,0 +1,11 @@
+{
+  "installation": {
+    "version": "20.6.2",
+    "plugins": {
+      "@nx/vite": "20.6.2",
+      "@nx/js": "20.6.2"
+    }
+  },
+  "$schema": "./node_modules/nx/schemas/nx-schema.json",
+  "nxCloudId": "67de1a9b00cf7d35799d2cee"
+}

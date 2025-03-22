@@ -1,1 +1,1 @@
-# Project LeMonde
+# Project LeMonde De-centralized web space for everyone
