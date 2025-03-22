@@ -5,3 +5,8 @@ node_modules
 .nx/workspace-data
 
 .pnpm-store
+
+.env
+
+vite.config.*.timestamp*
+vitest.config.*.timestamp*
