@@ -1,0 +1,38 @@
+{
+    "name": "@project-lemonde/react",
+    "version": "0.0.1",
+    "type": "module",
+    "license": "Apache-2.0",
+    "author": {
+        "name": "Masaru Yamagishi",
+        "email": "m.yamagishi90+git@gmail.com",
+        "url": "https://cafe-capy.net"
+    },
+    "homepage": "https://lemonde.app",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/project-lemonde/lemonde.git"
+    },
+    "scripts": {
+        "check-types": "tsc --noEmit",
+        "dev": "vite",
+        "build": "tsc -b && vite build",
+        "preview": "vite preview",
+        "test": "vitest"
+    },
+    "dependencies": {
+        "react": "catalog:"
+    },
+    "devDependencies": {
+        "@testing-library/dom": "catalog:",
+        "@testing-library/react": "catalog:",
+        "@types/react": "catalog:",
+        "@vitejs/plugin-react-swc": "catalog:",
+        "@vitest/coverage-v8": "catalog:",
+        "globals": "catalog:",
+        "jsdom": "catalog:",
+        "typescript": "catalog:",
+        "vite": "catalog:",
+        "vitest": "catalog:"
+    }
+}

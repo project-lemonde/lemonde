@@ -10,7 +10,9 @@
     "linter": {
         "enabled": true,
         "rules": {
-            "all": true
+            "style": {
+                "noDefaultExport": "off"
+            }
         }
     }
 }

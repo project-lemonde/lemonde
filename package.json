@@ -1,8 +1,42 @@
 {
-    "name": "@project-lemonde/root",
+    "name": "@project-lemonde/monorepo",
     "private": true,
+    "type": "module",
+    "license": "Apache-2.0",
+    "author": {
+        "name": "Masaru Yamagishi",
+        "email": "m.yamagishi90+git@gmail.com",
+        "url": "https://cafe-capy.net"
+    },
     "version": "0.0.1",
+    "homepage": "https://lemonde.app",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/project-lemonde/lemonde.git"
+    },
+    "keywords": [
+        "monorepo",
+        "metaverse",
+        "web3",
+        "blockchain",
+        "decentralized",
+        "decentralized-identity",
+        "decentralized-storage"
+    ],
     "packageManager": "pnpm@10.6.4",
-    "devDependencies": {},
-    "dependencies": {}
+    "engines": {
+        "node": ">=22.0.0",
+        "pnpm": ">=10.6.0"
+    },
+    "scripts": {
+        "check-types": "pnpm -r --parallel run check-types",
+        "lint": "pnpm biome check apps packages",
+        "lint:fix": "pnpm biome check --write apps packages",
+        "ci": "pnpm biome ci apps packages && vitest run",
+        "test": "vitest"
+    },
+    "devDependencies": {
+        "@biomejs/biome": "catalog:",
+        "vitest": "catalog:"
+    }
 }
