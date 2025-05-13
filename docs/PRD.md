@@ -3,18 +3,19 @@
 
 ## Project Overview
 - **Project Name:** Project LeMonde
-- **Document Version:** 0.0.2 <!-- Updated version -->
+- **Document Version:** 0.0.3 <!-- Updated version -->
 - **Author:** Masaru Yamagishi <m.yamagishi90+git@gmail.com>
 - **Date:** 2025-05-13T00:00:00+09:00 <!-- Updated date -->
+**- Development Approach: This project anticipates development primarily by a small team (often a single developer) and thus heavily relies on AI agent support for all phases of development, including design, implementation, testing, and runtime debugging.**
 
 ## 1. Objective
 - **Purpose:** 誰もが作りたいものを誰かと一緒に作れる空間の提供
-- **Goals:** ワールドワイドに同期可能な通信規格の定義とリファレンス実装が存在すること。ユーザーが創造活動を行い、他者と交流し、コンテンツを共有・所有できるオープンな3D空間を実現する。
-- **Stakeholders:** クリエイター、プレイヤー、コンテンツ制作者、開発者コミュニティ、プラットフォーム運営者
+- **Goals:** ワールドワイドに同期可能な通信規格の定義とリファレンス実装が存在すること。ユーザーが創造活動を行い、他者と交流し、コンテンツを共有・所有できるオープンな3D空間を実現する。**AIエージェントが開発者を強力にサポートし、また、AIがNPCとしてユーザー体験やデバッグに参加することで、少人数でも大規模で複雑なシステムの構築・運用を可能にする。**
+- **Stakeholders:** クリエイター、プレイヤー、コンテンツ制作者、開発者コミュニティ、プラットフォーム運営者、**AIエージェント（開発パートナーとして）**
 
 ## 2. Background
-- **Problem Statement:** 現状、中央集権的なプラットフォームが多く、ユーザーが自由にコンテンツを創造し、所有権を明確に持ち、他者とシームレスに協調作業を行うためのオープンな分散型インフラが不足している。
-- **Current Situation:** 既存のメタバースプラットフォームやゲーム作成ツールは存在するが、多くはクローズドなエコシステムであるか、分散型であっても機能が限定的である。
+- **Problem Statement:** 現状、中央集権的なプラットフォームが多く、ユーザーが自由にコンテンツを創造し、所有権を明確に持ち、他者とシームレスに協調作業を行うためのオープンな分散型インフラが不足している。**また、このような大規模システムの開発は多大なリソースを必要とするが、AIエージェントの活用により、少人数チームでも挑戦可能になる。**
+- **Current Situation:** 既存のメタバースプラットフォームやゲーム作成ツールは存在するが、多くはクローズドなエコシステムであるか、分散型であっても機能が限定的である。**AIによる開発支援や、AIが能動的にコンテンツ生成に関わるシステムはまだ発展途上である。**
 - **Related Documents:** (必要に応じて他のドキュメントへのリンクを追加)
 
 ## 3. Scope
@@ -27,6 +28,8 @@
     - デジタル証明書の発行と管理 (ユーザーID、コンテンツ所有権)
     - ユーザー保持データ管理 (仮想通貨、アバター、アイテム、作成コンテンツ)
     - AIによる空間生成およびユーザーの創造活動支援
+    **- AIエージェントによる開発プロセスの包括的支援 (コード生成、デバッグ、テスト、ドキュメンテーション)**
+    **- AIエージェントがNPCとしてランタイムデバッグおよびユーザーテストに参加するシステム**
     - TypeScriptを中心としたオープンソースでのリファレンス実装
     - pnpmによるバージョン管理とワークスペース管理
     - ReactによるフロントエンドUI
@@ -46,12 +49,19 @@
 - **FR6:** ユーザーは自身のアバター、所持アイテム、作成したコンテンツなどのデータを安全に保持・管理できる。
 - **FR7:** AIがユーザーの指示やコンテキストに基づいて3Dオブジェクトや環境を提案・生成したり、編集作業を補助したりできる。
 - **FR8:** システムはオープンなプロトコルに基づいて構築され、第三者が独自にクライアントやサーバー、サービスを開発・接続できる。
+**- FR-AI-DevSupport1:** AIエージェントは、開発者の指示に基づき、または文脈を理解して、コードスニペット、関数、クラス、あるいはモジュール全体の生成および提案を行う。
+**- FR-AI-DevSupport2:** AIエージェントは、既存コードの分析、リファクタリング提案、バグの可能性の指摘、および修正案の提示を行う。
+**- FR-AI-DevSupport3:** AIエージェントは、テストケースの自動生成、テストの実行支援、およびテストカバレッジの分析支援を行う。
+**- FR-AI-DevSupport4:** AIエージェントは、コードコメントやコミットメッセージ、PR記述の自動生成または支援を行う。
+**- FR-AI-NPCDebug1:** AIエージェントは、開発者の指示により、マルチプレイセッションにNPCとして参加し、指定された行動パターン（移動、インタラクション、特定機能の利用など）を実行できる。
+**- FR-AI-NPCDebug2:** AIエージェント(NPC)は、セッション中の自身の状態や観測したイベント、エラーの可能性などを開発者に報告する機能を持つ。
+**- FR-AI-NPCDebug3:** 複数のAIエージェント(NPC)を同時に参加させ、負荷テストや特定状況下でのインタラクションテストを実行できる。**
 
 ### 4.2 Non-Functional Requirements
-- **Performance:** ワールドワイドで低遅延な同期を実現し、少なくとも数十人規模のユーザーが同一空間で快適にインタラクションできる。
+- **Performance:** ワールドワイドで低遅延な同期を実現し、少なくとも数十人規模のユーザーが同一空間で快適にインタラクションできる。**AI NPC参加時もパフォーマンスへの影響を最小限に抑える。**
 - **Security:** ユーザー認証、通信の暗号化、デジタルアセットの所有権保護を確実に行う。
-- **Usability:** プログラミングや3Dモデリングの専門知識がないユーザーでも、直感的にコンテンツを創造し、他者と交流できるインターフェースを提供する。
-- **Scalability:** 将来的に数百万ユーザー規模の利用に対応できるよう、アーキテクチャを設計する。
+- **Usability:** プログラミングや3Dモデリングの専門知識がないユーザーでも、直感的にコンテンツを創造し、他者と交流できるインターフェースを提供する。**開発者にとっては、AIエージェントとの連携がシームレスで、開発効率を大幅に向上させるものであること。**
+- **Scalability:** 将来的に数百万ユーザー規模の利用に対応できるよう、アーキテクチャを設計する。**AI NPCの数やAI支援機能の拡充にも対応できるスケーラビリティを持つこと。**
 - **Openness:** プロトコル、主要なエディタ実装、リファレンス実装はオープンソース (MITライセンス等を想定) として公開し、コミュニティによる開発と貢献を促進する。
 - **Interoperability:** 標準的なデータフォーマット (glTFなど) をサポートし、他のツールやプラットフォームとの連携を考慮する。
 - **Decentralization:** コアな通信とデータ管理は、可能な限り分散型のアプローチを採用し、単一障害点や中央集権的なコントロールを避ける。
@@ -117,6 +127,8 @@
     - オブジェクトを選択し、基本的な操作（移動、回転、スケール）を行うためのシンプルなUI。
     - 接続しているユーザーリストの表示（任意）。
 - **Minimal Persistence (Optional for MVP, Local Storage based if included):** 編集されたシーンの状態をローカルストレージに保存・復元する機能（サーバーサイド永続化はMVP以降）。
+**- AI-Assisted Coding (Basic):** AIエージェントによる基本的なコード補完、簡単な関数生成の提案機能（IDE連携またはチャットベース）。
+**- AI NPC Debug Participant (Basic):** 開発者が手動で起動し、指定した基本的な行動（例:空間内をランダムに移動する）を実行するAI NPCを1体、テストセッションに参加させることができる。NPCはコンソールログに自身の行動概要を出力する。**
 
 ### 11.2 Technology Stack for MVP
 - **Communication Protocol:** WebRTC (using a library like `simple-peer` or a `yjs-webrtc` provider)
@@ -127,28 +139,4 @@
 - **Build Tool / Dev Server:** Vite
 - **Package Manager / Workspace:** pnpm
 - **Version Control:** Git (on GitHub, as per repository context)
-
-### 11.3 Goal of MVP
-- ユーザーが共有された3D空間に同時接続し、基本的なオブジェクトをリアルタイムで共同編集できることを実証する。
-- コアとなる技術（WebRTCによるP2P同期、CRDTによるコンフリクトフリーなデータ編集、Babylon.jsによる3D描画）の組み合わせが機能することを検証する。
-- 今後の開発の基盤となる、最小限の動作するプロダクトを提供する。
-- このMVPを通じて、初期のユーザーフィードバックを得る（開発チーム内やごく一部のテスターを想定）。
-
-## 12. Appendix
-- **Glossary:**
-    - **WebRTC:** Web Real-Time Communication
-    - **CRDT:** Conflict-free Replicated Data Type
-    - **UGC:** User-Generated Content
-    - **P2P:** Peer-to-Peer
-    - **MVP:** Minimum Viable Product
-- **References:**
-    - Babylon.js: https://www.babylonjs.com/
-    - Yjs: https://yjs.dev/
-    - WebRTC: https://webrtc.org/
-    - React: https://react.dev/
-    - TypeScript: https://www.typescriptlang.org/
-    - pnpm: https://pnpm.io/
-    - Vite: https://vitejs.dev/
-- **Document History:**
-    - v0.0.1 (2025-03-22): Initial draft by Masaru Yamagishi.
-    - v0.0.2 (2025-05-13): Updated based on detailed requirements, added MVP definition.
+**- AI Development Support:** (具体的なツールやプラットフォームは選定中、初期は汎用LLM APIを活用)**
